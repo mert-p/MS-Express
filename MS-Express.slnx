@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Business/Business.csproj" />
+  <Project Path="ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="Data/Data.csproj" />
+  <Project Path="WebApp/WebApp.csproj" />
+</Solution>
