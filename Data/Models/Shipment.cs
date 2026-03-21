@@ -12,7 +12,6 @@ namespace Data.Models
         public Client ClientSender { get; set; }
         public int ReceiverId { get; set; }
         public Client ClientReceiver { get; set; }
-        public string DeliveryCompany { get; set; }
         public int CourierId { get; set; }
         public Courier Courier { get; set; }
         public decimal Weight { get; set; }
