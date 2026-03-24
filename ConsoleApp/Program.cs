@@ -6,7 +6,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            CustomerDisplay customerDisplay = new CustomerDisplay();
+            ClientDisplay customerDisplay = new ClientDisplay();
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ExpressDbContext))]
-    [Migration("20260321125320_Initial")]
+    [Migration("20260322133604_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -116,10 +116,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeliveryCompany")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -166,16 +162,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ServiceId1")
-                        .HasColumnType("int");
-
                     b.HasKey("ShipmentId", "ServiceId");
 
                     b.HasIndex("ServiceId");
 
-                    b.HasIndex("ServiceId1");
-
-                    b.ToTable("ShipmentService");
+                    b.ToTable("ShipmentServices");
                 });
 
             modelBuilder.Entity("Data.Models.Shipment", b =>
@@ -183,7 +174,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Models.Courier", "Courier")
                         .WithMany("Shipments")
                         .HasForeignKey("CourierId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Data.Models.Client", "ClientReceiver")
@@ -208,14 +199,10 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.ShipmentService", b =>
                 {
                     b.HasOne("Data.Models.Service", "Service")
-                        .WithMany()
+                        .WithMany("ShipmentServices")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Data.Models.Service", null)
-                        .WithMany("ShipmentServices")
-                        .HasForeignKey("ServiceId1");
 
                     b.HasOne("Data.Models.Shipment", "Shipment")
                         .WithMany("ShipmentServices")

@@ -65,7 +65,6 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
-                    DeliveryCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourierId = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -93,35 +92,29 @@ namespace Data.Migrations
                         column: x => x.CourierId,
                         principalTable: "Couriers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShipmentService",
+                name: "ShipmentServices",
                 columns: table => new
                 {
                     ShipmentId = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     ExtraPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServiceId1 = table.Column<int>(type: "int", nullable: true)
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentService", x => new { x.ShipmentId, x.ServiceId });
+                    table.PrimaryKey("PK_ShipmentServices", x => new { x.ShipmentId, x.ServiceId });
                     table.ForeignKey(
-                        name: "FK_ShipmentService_Services_ServiceId",
+                        name: "FK_ShipmentServices_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShipmentService_Services_ServiceId1",
-                        column: x => x.ServiceId1,
-                        principalTable: "Services",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ShipmentService_Shipment_ShipmentId",
+                        name: "FK_ShipmentServices_Shipment_ShipmentId",
                         column: x => x.ShipmentId,
                         principalTable: "Shipment",
                         principalColumn: "Id",
@@ -144,21 +137,16 @@ namespace Data.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShipmentService_ServiceId",
-                table: "ShipmentService",
+                name: "IX_ShipmentServices_ServiceId",
+                table: "ShipmentServices",
                 column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShipmentService_ServiceId1",
-                table: "ShipmentService",
-                column: "ServiceId1");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ShipmentService");
+                name: "ShipmentServices");
 
             migrationBuilder.DropTable(
                 name: "Services");

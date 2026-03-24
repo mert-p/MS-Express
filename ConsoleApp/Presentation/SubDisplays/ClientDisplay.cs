@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ConsoleApp.Presentation.SubDisplays
 {
-    internal class CustomerDisplay
+    internal class ClientDisplay
     {
 
     }
