@@ -7,49 +7,49 @@ using System.Text;
 
 namespace Business
 {
-    public class ServiceBusiness:IDisposable
+    public class ShipmentBusiness : IDisposable
     {
         private readonly ExpressDbContext _context;
         private readonly bool _contextOwned;
-        public ServiceBusiness(ExpressDbContext context)
+        public ShipmentBusiness(ExpressDbContext context)
         {
             _context = context;
             _contextOwned = false;
         }
 
-        public ServiceBusiness()
+        public ShipmentBusiness()
         {
             _context = new ExpressDbContext();
             _contextOwned = true;
         }
-        public async Task<List<Service>> GetAllClients()
+        public async Task<List<Shipment>> GetAllClients()
         {
-            return await _context.Services.ToListAsync();
+            return await _context.Shipments.ToListAsync();
         }
-        public async Task<Service> GetClientById(int id)
+        public async Task<Shipment> GetClientById(int id)
         {
-            return await _context.Services.FindAsync(id);
+            return await _context.Shipments.FindAsync(id);
         }
-        public async Task AddClient(Service service)
+        public async Task AddClient(Shipment shipment)
         {
-            await _context.Services.AddAsync(service);
+            await _context.Shipments.AddAsync(shipment);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateClient(Service service)
+        public async Task UpdateClient(Shipment shipment)
         {
-            var item = await _context.Clients.FindAsync(service.Id);
+            var item = await _context.Shipments.FindAsync(shipment.Id);
             if (item != null)
             {
-                _context.Entry(item).CurrentValues.SetValues(service);
+                _context.Entry(item).CurrentValues.SetValues(shipment);
                 await _context.SaveChangesAsync();
             }
         }
         public async Task DeleteClient(int id)
         {
-            var service = await _context.Services.FindAsync(id);
-            if (service != null)
+            var shipment = await _context.Shipments.FindAsync(id);
+            if (shipment != null)
             {
-                _context.Services.Remove(service);
+                _context.Shipments.Remove(shipment);
                 await _context.SaveChangesAsync();
             }
         }

@@ -9,7 +9,7 @@ namespace Data
         { }
         public DbSet<Courier> Couriers { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Shipment> Shipment { get; set; } 
+        public DbSet<Shipment> Shipments { get; set; } 
         public DbSet<ShipmentService> ShipmentServices { get; set; }
         public DbSet<Service> Services { get; set; }    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,4 +1,5 @@
-﻿using ConsoleApp.Presentation.SubDisplays;
+﻿using ConsoleApp.Presentation;
+using ConsoleApp.Presentation.SubDisplays;
 
 namespace ConsoleApp
 {
@@ -6,7 +7,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            ClientDisplay customerDisplay = new ClientDisplay();
+
         }
     }
 }

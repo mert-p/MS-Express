@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -69,6 +70,82 @@ namespace ConsoleApp.Presentation
                     Console.WriteLine("Invalid date format. Please enter the date in dd-MM-yyyy format.");
                 }
             }
+        }
+        public string ReadPhoneInput(string prompt)
+        {
+            while (true)
+            {
+                Console.WriteLine(prompt);
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Phone number cannot be empty.");
+                    continue;
+                }
+
+                // Check if all characters are digits
+                bool isAllDigits = input.All(char.IsDigit);
+
+                // Check length (example: between 7 and 15 digits)
+                if (isAllDigits && input.Length >= 7 && input.Length <= 15)
+                {
+                    return input;
+                }
+                else
+                {
+                    Console.WriteLine("Phone must contain only digits and be 7–15 characters long.");
+                }
+            }
+        }
+        public string ReadGmailInput(string prompt)
+        {
+            while (true)
+            {
+                Console.WriteLine(prompt);
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Email cannot be empty.");
+                    continue;
+                }
+
+                if (GmailCheck(input))
+                {
+                    return input;
+                }
+                else
+                {
+                    Console.WriteLine("Email must end with @gmail.com.");
+                }
+            }
+        }
+        public bool GmailCheck(string input)
+        {
+            input = input.Trim();
+            string lower = input.ToLower();
+
+            for (int i = 0; i < lower.Length; i++)
+            {
+                char c = lower[i];
+
+                if (c == ' ')
+                {
+                    return false;
+                }
+
+                if (c == '@')
+                {
+                    if (i == 0)
+                    { return false; }
+
+                    string domain = lower.Substring(i + 1);
+
+                    return domain == "gmail.com";
+                }
+            }
+            return false;
         }
     }
 }
