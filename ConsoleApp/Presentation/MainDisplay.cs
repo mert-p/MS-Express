@@ -37,7 +37,6 @@ namespace ConsoleApp.Presentation
                 Menu();
                 input = mishoHelper.ReadIntInput("Please select an option:");
 
-                // Switch case for different menu options
                 switch (input)
                 {
                     case 1:
@@ -47,13 +46,13 @@ namespace ConsoleApp.Presentation
                         await clientDisplay.Input();
                         break;
                     case 3:
-                        //await shipmentDisplay
+                        await shipmentDisplay.Input();
                         break;
                     case 4:
-                        //await shipmentServiceDisplay
+                        await shipmentServiceDisplay.Input();
                         break;
                     case 5:
-                        //await serviceDisplay
+                        await serviceDisplay.Input();
                         break;
                     case 0:
                         Console.WriteLine("Exiting...");

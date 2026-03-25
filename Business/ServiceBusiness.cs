@@ -22,20 +22,20 @@ namespace Business
             _context = new ExpressDbContext();
             _contextOwned = true;
         }
-        public async Task<List<Service>> GetAllClients()
+        public async Task<List<Service>> GetAllServices()
         {
             return await _context.Services.ToListAsync();
         }
-        public async Task<Service> GetClientById(int id)
+        public async Task<Service> GetServiceById(int id)
         {
             return await _context.Services.FindAsync(id);
         }
-        public async Task AddClient(Service service)
+        public async Task AddService(Service service)
         {
             await _context.Services.AddAsync(service);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateClient(Service service)
+        public async Task UpdateService(Service service)
         {
             var item = await _context.Clients.FindAsync(service.Id);
             if (item != null)
@@ -44,7 +44,7 @@ namespace Business
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task DeleteClient(int id)
+        public async Task DeleteService(int id)
         {
             var service = await _context.Services.FindAsync(id);
             if (service != null)

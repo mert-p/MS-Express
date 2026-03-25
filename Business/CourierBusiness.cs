@@ -30,6 +30,15 @@ namespace Business
         {
             return await _context.Couriers.FindAsync(id);
         }
+        public async Task<Courier> GetCourierByIdWithShipment(int id)
+        {
+            return await _context.Couriers
+                                    .Include(c => c.Shipments)                        
+                                        .ThenInclude(s => s.ClientReceiver)          
+                                    .Include(c => c.Shipments)                       
+                                        .ThenInclude(s => s.ClientSender)            
+                                    .FirstOrDefaultAsync(c => c.Id == id);
+        }
         public async Task AddCourier(Courier courier)
         {
             await _context.Couriers.AddAsync(courier);

@@ -22,20 +22,20 @@ namespace Business
             _context = new ExpressDbContext();
             _contextOwned = true;
         }
-        public async Task<List<Shipment>> GetAllClients()
+        public async Task<List<Shipment>> GetAllShipments()
         {
             return await _context.Shipments.ToListAsync();
         }
-        public async Task<Shipment> GetClientById(int id)
+        public async Task<Shipment> GetShipmentById(int id)
         {
             return await _context.Shipments.FindAsync(id);
         }
-        public async Task AddClient(Shipment shipment)
+        public async Task AddShipment(Shipment shipment)
         {
             await _context.Shipments.AddAsync(shipment);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateClient(Shipment shipment)
+        public async Task UpdateShipment(Shipment shipment)
         {
             var item = await _context.Shipments.FindAsync(shipment.Id);
             if (item != null)
@@ -44,7 +44,7 @@ namespace Business
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task DeleteClient(int id)
+        public async Task DeleteShipment(int id)
         {
             var shipment = await _context.Shipments.FindAsync(id);
             if (shipment != null)

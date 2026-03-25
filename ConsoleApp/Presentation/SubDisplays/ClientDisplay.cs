@@ -67,7 +67,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             mishoHelper.ShowHeader("All Clients");
             foreach (var client in clients)
             {
-                Console.WriteLine($"ID: {client.Id}, Name: {client.FirstName} {client.LastName}\nPhone:{client.Phone}\nEmail:{client.Email}\nAddress{client.Address}");
+                Console.WriteLine(client);
             }
         }
         private async Task AddClient()
@@ -79,15 +79,15 @@ namespace ConsoleApp.Presentation.SubDisplays
             client.Email = mishoHelper.ReadGmailInput("Enter email:");
             client.Address = mishoHelper.ReadStringInput("Enter address:");
             await clientBusiness.AddClient(client);
-            Console.WriteLine("Author added successfully.");
+            Console.WriteLine("Client added successfully.");
         }
         private async Task UpdateClient()
         {
-            var clientId = mishoHelper.ReadIntInput("Enter Author ID to update:"); 
+            var clientId = mishoHelper.ReadIntInput("Enter Client ID to update:"); 
             var client = await clientBusiness.GetClientById(clientId); 
             if (client == null)
             {
-                Console.WriteLine("Author not found."); 
+                Console.WriteLine("Client not found."); 
                 return;
             }
             await FetchClientById(clientId);
@@ -98,16 +98,16 @@ namespace ConsoleApp.Presentation.SubDisplays
             client.Address = mishoHelper.ReadStringInput("Enter new address:");
             await clientBusiness.UpdateClient(client);
 
-            Console.WriteLine("Author updated successfully.");
+            Console.WriteLine("Client updated successfully.");
         }
         private async Task FetchClient()
         {
-            var clientId = mishoHelper.ReadIntInput("Enter Author ID to fetch:");
+            var clientId = mishoHelper.ReadIntInput("Enter Client ID to fetch:");
             await FetchClientById(clientId);
         }
         private async Task DeleteClient()
         {
-            var clientId = mishoHelper.ReadIntInput("Enter Author ID to delete:"); 
+            var clientId = mishoHelper.ReadIntInput("Enter Client ID to delete:"); 
             var client = await clientBusiness.GetClientById(clientId); 
             if (client == null)
             {
@@ -115,7 +115,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 return;
             }
             await clientBusiness.DeleteClient(clientId); 
-            Console.WriteLine("Author deleted successfully.");
+            Console.WriteLine("Client deleted successfully.");
         }
         public async Task FetchClientById(int clientId)
         {
@@ -125,7 +125,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 Console.WriteLine("Client not found.");
                 return;
             }
-            Console.WriteLine($"ID: {client.Id}, Name: {client.FirstName} {client.LastName}\nPhone:{client.Phone}\nEmail:{client.Email}\nAddress{client.Address}");
+            Console.WriteLine(client);
         }
     }
 }

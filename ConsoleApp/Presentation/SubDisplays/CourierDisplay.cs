@@ -74,7 +74,8 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task AddCourier()
         {
             Courier courier = new Courier();
-            courier.Name = mishoHelper.ReadStringInput("Enter Name:");
+            courier.FirstName = mishoHelper.ReadStringInput("Enter first name:");
+            courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
             await courierBusiness.AddCourier(courier);
@@ -90,7 +91,8 @@ namespace ConsoleApp.Presentation.SubDisplays
                 return;
             }
             await FetchCourierById(courierId);
-            courier.Name = mishoHelper.ReadStringInput("Enter Name:");
+            courier.FirstName = mishoHelper.ReadStringInput("Enter first name:");
+            courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
             await courierBusiness.UpdateCourier(courier);
@@ -100,7 +102,12 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task FetchCourier()
         {
             var courierId = mishoHelper.ReadIntInput("Enter Courier ID to fetch:");
+            var courier = await courierBusiness.GetCourierByIdWithShipment(courierId);
             await FetchCourierById(courierId);
+            foreach(var shipment in courier.Shipments )
+            {
+                Console.WriteLine(shipment);
+            }
         }
         private async Task DeleteCourier()
         {
@@ -114,9 +121,9 @@ namespace ConsoleApp.Presentation.SubDisplays
             await courierBusiness.DeleteCourier(courierId);
             Console.WriteLine("Courier deleted successfully.");
         }
-        public async Task FetchCourierById(int clientId)
+        public async Task FetchCourierById(int courierId)
         {
-            var courier = await courierBusiness.GetCourierById(clientId);
+            var courier = await courierBusiness.GetCourierById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");
