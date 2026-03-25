@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ExpressDbContext))]
-    [Migration("20260322133604_Initial")]
+    [Migration("20260325113055_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -144,7 +144,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Shipment");
+                    b.ToTable("Shipments");
                 });
 
             modelBuilder.Entity("Data.Models.ShipmentService", b =>

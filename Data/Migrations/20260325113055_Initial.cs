@@ -58,7 +58,7 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shipment",
+                name: "Shipments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -74,21 +74,21 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shipment", x => x.Id);
+                    table.PrimaryKey("PK_Shipments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shipment_Clients_ReceiverId",
+                        name: "FK_Shipments_Clients_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Shipment_Clients_SenderId",
+                        name: "FK_Shipments_Clients_SenderId",
                         column: x => x.SenderId,
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Shipment_Couriers_CourierId",
+                        name: "FK_Shipments_Couriers_CourierId",
                         column: x => x.CourierId,
                         principalTable: "Couriers",
                         principalColumn: "Id",
@@ -114,26 +114,26 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShipmentServices_Shipment_ShipmentId",
+                        name: "FK_ShipmentServices_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
-                        principalTable: "Shipment",
+                        principalTable: "Shipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipment_CourierId",
-                table: "Shipment",
+                name: "IX_Shipments_CourierId",
+                table: "Shipments",
                 column: "CourierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipment_ReceiverId",
-                table: "Shipment",
+                name: "IX_Shipments_ReceiverId",
+                table: "Shipments",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipment_SenderId",
-                table: "Shipment",
+                name: "IX_Shipments_SenderId",
+                table: "Shipments",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
@@ -152,7 +152,7 @@ namespace Data.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Shipment");
+                name: "Shipments");
 
             migrationBuilder.DropTable(
                 name: "Clients");

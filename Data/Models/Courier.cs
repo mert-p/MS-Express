@@ -11,5 +11,9 @@ namespace Data.Models
         public string Phone { get; set; }   
         public decimal Salary { get; set; }
         public List<Shipment> Shipments { get; set; }
+        public override string ToString()
+        {
+            return $"ID:{Id}, Name:{Name}\nPhone number:{Phone}\nSalary:{Salary:F2}";
+        }
     }
 }

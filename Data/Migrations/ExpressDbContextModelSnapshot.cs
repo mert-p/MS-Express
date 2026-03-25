@@ -141,7 +141,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Shipment");
+                    b.ToTable("Shipments");
                 });
 
             modelBuilder.Entity("Data.Models.ShipmentService", b =>

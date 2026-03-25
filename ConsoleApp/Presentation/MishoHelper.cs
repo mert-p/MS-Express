@@ -20,12 +20,26 @@ namespace ConsoleApp.Presentation
             int result;
             while (true)
             {
-                Console.WriteLine(prompt);
+                Console.Write(prompt);
                 if (int.TryParse(Console.ReadLine(), out result) && result >= 0)
                 {
                     return result;
                 }
-                Console.WriteLine("Invalid input. Please enter a number.");
+                Console.Write("Invalid input! Please enter a number:");
+            }
+        }
+        public decimal ReadDecimalInput(string prompt)
+        {
+            decimal result;
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+                if (decimal.TryParse(input, out result) && result >= 0)
+                {
+                    return result;
+                }
+                Console.WriteLine("Invalid input! Please enter a non-negative decimal number:");
             }
         }
         public string ReadStringInput(string prompt)
@@ -84,10 +98,8 @@ namespace ConsoleApp.Presentation
                     continue;
                 }
 
-                // Check if all characters are digits
                 bool isAllDigits = input.All(char.IsDigit);
 
-                // Check length (example: between 7 and 15 digits)
                 if (isAllDigits && input.Length >= 7 && input.Length <= 15)
                 {
                     return input;
@@ -121,7 +133,7 @@ namespace ConsoleApp.Presentation
                 }
             }
         }
-        public bool GmailCheck(string input)
+        static bool GmailCheck(string input)
         {
             input = input.Trim();
             string lower = input.ToLower();
