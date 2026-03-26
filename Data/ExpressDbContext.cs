@@ -14,8 +14,13 @@ namespace Data
         public DbSet<Service> Services { get; set; }    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = DESKTOP-V015LRM\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Server = DESKTOP-V015LRM\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
+            }
         }
+        public ExpressDbContext(DbContextOptions<ExpressDbContext> options) : base(options)
+        { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Client ↔ Shipment (Sender)

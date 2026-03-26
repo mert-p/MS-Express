@@ -2,5 +2,6 @@
   <Project Path="Business/Business.csproj" />
   <Project Path="ConsoleApp/ConsoleApp.csproj" />
   <Project Path="Data/Data.csproj" />
+  <Project Path="TestProject1/TestProject1.csproj" Id="f1e22cb4-c543-4373-9f23-9f9c97ab354c" />
   <Project Path="WebApp/WebApp.csproj" />
 </Solution>
