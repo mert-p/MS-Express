@@ -1,65 +1,49 @@
 ﻿using Data;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Business
 {
-    public class ShipmentBusiness : IDisposable
+    public class ShipmentBusiness : BaseBusiness<Shipment>
     {
-        private readonly ExpressDbContext _context;
-        private readonly bool _contextOwned;
-        public ShipmentBusiness(ExpressDbContext context)
+        public ShipmentBusiness(ExpressDbContext context) : base(context) { }
+        public ShipmentBusiness() : base() { }
+
+        /*public async Task<List<Shipment>> GetShipmentsByStatus(string status)
         {
-            _context = context;
-            _contextOwned = false;
+            return await _context.Shipments
+                .Where(s => s.Status == status)
+                .ToListAsync();
+        }*/
+        public async Task<ShipmentViewModel> GetShipmentViewById(int id)
+        {
+            var shipment = await GetById(id);
+            return MapToViewModel(shipment);
         }
 
-        public ShipmentBusiness()
+        public async Task<List<ShipmentViewModel>> GetAllShipmentViews()
         {
-            _context = new ExpressDbContext();
-            _contextOwned = true;
+            var shipments = await GetAll();
+            return shipments.Select(MapToViewModel).ToList();
         }
-        public async Task<List<Shipment>> GetAllShipments()
+        private ShipmentViewModel MapToViewModel(Shipment s)
         {
-            return await _context.Shipments.ToListAsync();
-        }
-        public async Task<Shipment> GetShipmentById(int id)
-        {
-            return await _context.Shipments.FindAsync(id);
-        }
-        public async Task AddShipment(Shipment shipment)
-        {
-            await _context.Shipments.AddAsync(shipment);
-            await _context.SaveChangesAsync();
-        }
-        public async Task UpdateShipment(Shipment shipment)
-        {
-            var item = await _context.Shipments.FindAsync(shipment.Id);
-            if (item != null)
+            return new ShipmentViewModel
             {
-                _context.Entry(item).CurrentValues.SetValues(shipment);
-                await _context.SaveChangesAsync();
-            }
-        }
-        public async Task DeleteShipment(int id)
-        {
-            var shipment = await _context.Shipments.FindAsync(id);
-            if (shipment != null)
-            {
-                _context.Shipments.Remove(shipment);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_contextOwned)
-            {
-                _context.Dispose();
-            }
+                Id = s.Id,
+                SenderFullName = $"{s.ClientSender?.FirstName} {s.ClientSender?.LastName}",
+                ReceiverFullName = $"{s.ClientReceiver?.FirstName} {s.ClientReceiver?.LastName}",
+                CourierFullName = $"{s.Courier?.FirstName} {s.Courier?.LastName}",
+                Weight = $"{s.Weight}kg",
+                DisplayPrice = $"{s.Price:F2}",
+                Type = s.Type,
+                Date = s.Date.ToString("yyyy-MM-dd"),
+                Status = s.Status
+            };
         }
     }
 }

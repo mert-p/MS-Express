@@ -57,7 +57,7 @@ namespace ConsoleApp.Presentation.SubDisplays
 
         private async Task ListAllShipments()
         {
-            var shipments = await shipmentBusiness.GetAllShipments();
+            var shipments = await shipmentBusiness.GetAll();
             if (shipments.Count == 0)
             {
                 Console.WriteLine("No shipment found.");
@@ -82,14 +82,14 @@ namespace ConsoleApp.Presentation.SubDisplays
             shipment.Date = DateTime.Now;
             shipment.Status = mishoHelper.ReadStringInput("Enter status:");
 
-            await shipmentBusiness.AddShipment(shipment);
+            await shipmentBusiness.Add(shipment);
             Console.WriteLine("Shipment added successfully.");
         }
 
         private async Task UpdateShipment()
         {
             var shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to update:");
-            var shipment = await shipmentBusiness.GetShipmentById(shipmentId);
+            var shipment = await shipmentBusiness.GetById(shipmentId);
 
             if (shipment == null)
             {
@@ -107,7 +107,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             shipment.Type = mishoHelper.ReadStringInput("Enter new type:");
             shipment.Status = mishoHelper.ReadStringInput("Enter new status:");
 
-            await shipmentBusiness.UpdateShipment(shipment);
+            await shipmentBusiness.Update(shipment);
 
             Console.WriteLine("Shipment updated successfully.");
         }
@@ -121,19 +121,19 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task DeleteShipment()
         {
             var shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to delete:");
-            var shipment = await shipmentBusiness.GetShipmentById(shipmentId);
+            var shipment = await shipmentBusiness.GetById(shipmentId);
             if (shipment == null)
             {
                 Console.WriteLine("Shipment not found.");
                 return;
             }
-            await shipmentBusiness.DeleteShipment(shipmentId);
+            await shipmentBusiness.Delete(shipmentId);
             Console.WriteLine("Shipment deleted successfully.");
         }
 
         public async Task FetchShipmentById(int shipmentId)
         {
-            var shipment = await shipmentBusiness.GetShipmentById(shipmentId);
+            var shipment = await shipmentBusiness.GetById(shipmentId);
             if (shipment == null)
             {
                 Console.WriteLine("Shipment not found.");

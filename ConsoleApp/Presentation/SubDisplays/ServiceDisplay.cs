@@ -60,7 +60,7 @@ namespace ConsoleApp.Presentation.SubDisplays
 
         private async Task ListAllServices()
         {
-            var services = await serviceBusiness.GetAllServices();
+            var services = await serviceBusiness.GetAll();
 
             if (services.Count == 0)
             {
@@ -82,14 +82,14 @@ namespace ConsoleApp.Presentation.SubDisplays
             service.Name = mishoHelper.ReadStringInput("Enter name:");
             service.Price = mishoHelper.ReadDecimalInput("Enter price:");
 
-            await serviceBusiness.AddService(service);
+            await serviceBusiness.Add(service);
             Console.WriteLine("Service added successfully.");
         }
 
         private async Task UpdateService()
         {
             var serviceId = mishoHelper.ReadIntInput("Enter Service ID to update:");
-            var service = await serviceBusiness.GetServiceById(serviceId);
+            var service = await serviceBusiness.GetById(serviceId);
 
             if (service == null)
             {
@@ -102,7 +102,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             service.Name = mishoHelper.ReadStringInput("Enter new name:");
             service.Price = mishoHelper.ReadDecimalInput("Enter new price:");
 
-            await serviceBusiness.UpdateService(service);
+            await serviceBusiness.Update(service);
             Console.WriteLine("Service updated successfully.");
         }
 
@@ -115,7 +115,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task DeleteService()
         {
             var serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:");
-            var service = await serviceBusiness.GetServiceById(serviceId);
+            var service = await serviceBusiness.GetById(serviceId);
 
             if (service == null)
             {
@@ -123,13 +123,13 @@ namespace ConsoleApp.Presentation.SubDisplays
                 return;
             }
 
-            await serviceBusiness.DeleteService(serviceId);
+            await serviceBusiness.Delete(serviceId);
             Console.WriteLine("Service deleted successfully.");
         }
 
         public async Task FetchServiceById(int serviceId)
         {
-            var service = await serviceBusiness.GetServiceById(serviceId);
+            var service = await serviceBusiness.GetById(serviceId);
 
             if (service == null)
             {

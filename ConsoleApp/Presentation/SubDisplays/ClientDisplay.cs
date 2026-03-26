@@ -58,7 +58,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         }
         private async Task ListAllClients()
         {
-            var clients = await clientBusiness.GetAllClients();
+            var clients = await clientBusiness.GetAll();
             if (clients.Count == 0)
             {
                 Console.WriteLine("No clients found."); 
@@ -78,13 +78,13 @@ namespace ConsoleApp.Presentation.SubDisplays
             client.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             client.Email = mishoHelper.ReadGmailInput("Enter email:");
             client.Address = mishoHelper.ReadStringInput("Enter address:");
-            await clientBusiness.AddClient(client);
+            await clientBusiness.Add(client);
             Console.WriteLine("Client added successfully.");
         }
         private async Task UpdateClient()
         {
             var clientId = mishoHelper.ReadIntInput("Enter Client ID to update:"); 
-            var client = await clientBusiness.GetClientById(clientId); 
+            var client = await clientBusiness.GetById(clientId); 
             if (client == null)
             {
                 Console.WriteLine("Client not found."); 
@@ -96,16 +96,17 @@ namespace ConsoleApp.Presentation.SubDisplays
             client.Phone = mishoHelper.ReadPhoneInput("Enter new phone number:");
             client.Email = mishoHelper.ReadGmailInput("Enter new email:");
             client.Address = mishoHelper.ReadStringInput("Enter new address:");
-            await clientBusiness.UpdateClient(client);
+            await clientBusiness.Update(client);
 
             Console.WriteLine("Client updated successfully.");
         }
         private async Task FetchClient()
         {
             var clientId = mishoHelper.ReadIntInput("Enter Client ID to fetch:");
-            var client = await clientBusiness.GetClientByIdWithShipment(clientId);
+            var client = await clientBusiness.GetById(clientId);
             await FetchClientById(clientId);
-            Console.WriteLine("SentShipments");
+            // zaradi promenite ne bachka
+            /*Console.WriteLine("SentShipments");
             foreach (var shipment in client.SentShipments)
             {
                 Console.WriteLine(shipment);
@@ -113,23 +114,23 @@ namespace ConsoleApp.Presentation.SubDisplays
             foreach(var  shipment in client.ReceivedShipments)
             {
                 Console.WriteLine(shipment);
-            }
+            }*/
         }
         private async Task DeleteClient()
         {
             var clientId = mishoHelper.ReadIntInput("Enter Client ID to delete:"); 
-            var client = await clientBusiness.GetClientById(clientId); 
+            var client = await clientBusiness.GetById(clientId); 
             if (client == null)
             {
                 Console.WriteLine("Client not found."); 
                 return;
             }
-            await clientBusiness.DeleteClient(clientId); 
+            await clientBusiness.Delete(clientId); 
             Console.WriteLine("Client deleted successfully.");
         }
         public async Task FetchClientById(int clientId)
         {
-            var client = await clientBusiness.GetClientById(clientId);
+            var client = await clientBusiness.GetById(clientId);
             if (client == null)
             {
                 Console.WriteLine("Client not found.");

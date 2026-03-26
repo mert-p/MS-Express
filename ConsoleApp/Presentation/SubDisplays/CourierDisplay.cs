@@ -59,7 +59,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         }
         private async Task ListAllCouriers()
         {
-            var couriers = await courierBusiness.GetAllCouriers();
+            var couriers = await courierBusiness.GetAll();
             if (couriers.Count == 0)
             {
                 Console.WriteLine("No courier found.");
@@ -78,13 +78,13 @@ namespace ConsoleApp.Presentation.SubDisplays
             courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
-            await courierBusiness.AddCourier(courier);
+            await courierBusiness.Add(courier);
             Console.WriteLine("Courier added successfully.");
         }
         private async Task UpdateCourier()
         {
             var courierId = mishoHelper.ReadIntInput("Enter Author ID to update:");
-            var courier = await courierBusiness.GetCourierById(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");
@@ -95,35 +95,36 @@ namespace ConsoleApp.Presentation.SubDisplays
             courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
-            await courierBusiness.UpdateCourier(courier);
+            await courierBusiness.Update(courier);
 
             Console.WriteLine("Courier updated successfully.");
         }
         private async Task FetchCourier()
         {
             var courierId = mishoHelper.ReadIntInput("Enter Courier ID to fetch:");
-            var courier = await courierBusiness.GetCourierByIdWithShipment(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             await FetchCourierById(courierId);
-            foreach(var shipment in courier.Shipments )
+            // zaradi promenite ne bachka
+            /*foreach (var shipment in courier.Shipments )
             {
                 Console.WriteLine(shipment);
-            }
+            }*/
         }
         private async Task DeleteCourier()
         {
             var courierId = mishoHelper.ReadIntInput("Enter Courier ID to delete:");
-            var courier = await courierBusiness.GetCourierById(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");
                 return;
             }
-            await courierBusiness.DeleteCourier(courierId);
+            await courierBusiness.Delete(courierId);
             Console.WriteLine("Courier deleted successfully.");
         }
         public async Task FetchCourierById(int courierId)
         {
-            var courier = await courierBusiness.GetCourierById(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");

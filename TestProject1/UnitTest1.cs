@@ -25,7 +25,7 @@ namespace Tests
                 ClientBusiness ClientBusiness = new ClientBusiness(context);
 
                 // Act
-                List<Client> Clients = await ClientBusiness.GetAllClients();
+                List<Client> Clients = await ClientBusiness.GetAll();
 
                 // Assert
                 
