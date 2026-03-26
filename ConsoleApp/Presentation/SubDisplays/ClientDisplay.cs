@@ -103,7 +103,17 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task FetchClient()
         {
             var clientId = mishoHelper.ReadIntInput("Enter Client ID to fetch:");
+            var client = await clientBusiness.GetClientByIdWithShipment(clientId);
             await FetchClientById(clientId);
+            Console.WriteLine("SentShipments");
+            foreach (var shipment in client.SentShipments)
+            {
+                Console.WriteLine(shipment);
+            }
+            foreach(var  shipment in client.ReceivedShipments)
+            {
+                Console.WriteLine(shipment);
+            }
         }
         private async Task DeleteClient()
         {

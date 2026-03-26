@@ -14,7 +14,7 @@ namespace Data
         public DbSet<Service> Services { get; set; }    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = DESKTOP-38F848J\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
+            optionsBuilder.UseSqlServer(@"Server = DESKTOP-V015LRM\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
