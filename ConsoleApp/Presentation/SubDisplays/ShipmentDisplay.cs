@@ -132,11 +132,21 @@ namespace ConsoleApp.Presentation.SubDisplays
             shipment.ReceiverId = mishoHelper.ReadIntInput("Enter receiver ID:");
             while (clientBusiness.GetById(shipment.ReceiverId) == null)
             { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
+            if (shipment.ReceiverId == shipment.SenderId)
+            {
+                Console.WriteLine("Sender and Reciver cant be the same");
+                return;
+            }
             await ListAllAvailabeleCouriers();
             shipment.CourierId = mishoHelper.ReadIntInput("Enter courier ID:");
             while (clientBusiness.GetById(shipment.CourierId) == null)
             { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             Courier courier = await courierBusiness.GetById(shipment.CourierId);
+            if(courier.Available==true)
+            {
+                Console.WriteLine("Courier is busy right now!");
+                return;
+            }
             courier.Available = false;
             await courierBusiness.Update(courier);
             shipment.Weight = mishoHelper.ReadDecimalInput("Enter weight:");
@@ -202,6 +212,11 @@ namespace ConsoleApp.Presentation.SubDisplays
             shipment.ReceiverId = mishoHelper.ReadIntInput("Enter new receiver ID:");
             while (clientBusiness.GetById(shipment.ReceiverId) == null)
             { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
+            if(shipment.ReceiverId == shipment.SenderId)
+            { 
+                Console.WriteLine("Sender and Reciver cant be the same");
+                return;
+            }
             await ListAllAvailabeleCouriers();
             shipment.CourierId = mishoHelper.ReadIntInput("Enter new courier ID:");
             while (clientBusiness.GetById(shipment.CourierId) == null)
