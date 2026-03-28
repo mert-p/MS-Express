@@ -142,7 +142,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             while (clientBusiness.GetById(shipment.CourierId) == null)
             { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             Courier courier = await courierBusiness.GetById(shipment.CourierId);
-            if(courier.Available==true)
+            if(courier.Available==false)
             {
                 Console.WriteLine("Courier is busy right now!");
                 return;
