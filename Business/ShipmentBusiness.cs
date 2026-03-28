@@ -29,12 +29,9 @@ namespace Business
         {
             return await _context.Shipments.Include(c => c.ClientReceiver).Include(c => c.ClientSender).Include(c => c.Courier).Include(c => c.ShipmentServices).ThenInclude(c => c.Service).FirstOrDefaultAsync(c => c.Id == id);
         }
-
-        /*public async Task<List<Shipment>> GetShipmentsByStatus(string status)
+        public async Task<List<Shipment>> GetShipmentsByStatus(string status)
         {
-            return await _context.Shipments
-                .Where(s => s.Status == status)
-                .ToListAsync();
-        }*/
+            return await _context.Shipments.Where(s => s.Status == status).ToListAsync();
+        }
     }
 }
