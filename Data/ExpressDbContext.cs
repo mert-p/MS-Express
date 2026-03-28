@@ -16,7 +16,7 @@ namespace Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server =DESKTOP-GHPFS2U\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
+                optionsBuilder.UseSqlServer(@"Server= DESKTOP-38F848J\SQLEXPRESS; Database = ExpressDb; Integrated Security = True; TrustServerCertificate = True;");
             }
         }
         public ExpressDbContext(DbContextOptions<ExpressDbContext> options) : base(options)

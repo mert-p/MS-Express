@@ -160,6 +160,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
+            courier.Available = true;
             await courierBusiness.Add(courier);
             Console.WriteLine("Courier added successfully.");
         }

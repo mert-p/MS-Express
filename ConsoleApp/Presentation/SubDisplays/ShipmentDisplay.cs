@@ -12,7 +12,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         private readonly ClientBusiness clientBusiness = new ClientBusiness();
         private readonly CourierBusiness courierBusiness= new CourierBusiness();
         private readonly ShipmentServiceBusiness shipmentServiceBusiness = new ShipmentServiceBusiness();
-
+        private readonly ServiceBusiness serviceBusiness = new ServiceBusiness();
 
         private readonly MishoHelper mishoHelper = new MishoHelper();
 
@@ -26,6 +26,12 @@ namespace ConsoleApp.Presentation.SubDisplays
             Console.WriteLine("5. Delete Shipment");
             Console.WriteLine("0. <-Back");
         }
+        private void ListingMenu()
+        {
+            mishoHelper.ShowHeader("All Shipments");
+            Console.WriteLine("1.Normal");
+            Console.WriteLine("2.With Services");
+        }
 
         public async Task Input()
         {
@@ -38,7 +44,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 switch (input)
                 {
                     case 1:
-                        await ListAllShipments();
+                        await Listing();
                         break;
                     case 2:
                         await AddShipment();
@@ -52,16 +58,34 @@ namespace ConsoleApp.Presentation.SubDisplays
                     case 5:
                         await DeleteShipment();
                         break;
+                    case 6:
+                        await CalculataPrice();
+                        break;
                     default:
                         break;
                 }
                 Console.WriteLine("Press any key..."); Console.ReadKey(); Console.Clear();
             } while (input != 0);
         }
-
+        private async Task Listing()
+        {
+            ListingMenu();
+            int input = mishoHelper.ReadIntInput("Please select an option:");
+            switch (input)
+            {
+                case 1:
+                    await ListAllShipments();
+                    break;
+                case 2:
+                    await ListAllShipmentsWithServices();
+                    break;
+                default:
+                    break;
+            }
+        }
         private async Task ListAllShipments()
         {
-            var shipments = await shipmentBusiness.GetAll();
+            var shipments = await shipmentBusiness.GetAllShipments();
             if (shipments.Count == 0)
             {
                 Console.WriteLine("No shipment found.");
@@ -73,37 +97,87 @@ namespace ConsoleApp.Presentation.SubDisplays
                 Console.WriteLine(shipment);
             }
         }
+        private async Task ListAllShipmentsWithServices()
+        {
+            var shipments = await shipmentBusiness.GetShipmentsWirhService();
+            if (shipments.Count == 0)
+            {
+                Console.WriteLine("No shipment found.");
+                return;
+            }
+            mishoHelper.ShowHeader("All Shipments");
+            foreach (var shipment in shipments)
+            {
+                Console.WriteLine(shipment);
+                foreach(var service in shipment.ShipmentServices)
+                {
+                    Console.Write("Service:");
+                    Console.WriteLine(service.Service);
+                    Console.WriteLine("Note:");
+                    Console.WriteLine(service.Notes);
+                }
+            }
+        }
 
         private async Task AddShipment()
         {
-            bool service=false;
+            bool service_owned=false;
             mishoHelper.ShowHeader($"Creating Shipment");
-            Console.WriteLine("1.Without service");
-            Console.WriteLine("2.Wit service");
-            int input = mishoHelper.ReadIntInput("Please select an option:");
-            switch (input)
-            {
-                case 1:
-                    service = false;
-                    break;
-                case 2:
-                    service = true;
-                    break;
-                default:
-                    break;
-            }
             Shipment shipment = new Shipment();
+            await ListAllClients();
             shipment.SenderId = mishoHelper.ReadIntInput("Enter sender ID:");
+            while(clientBusiness.GetById(shipment.SenderId)==null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             shipment.ReceiverId = mishoHelper.ReadIntInput("Enter receiver ID:");
+            while (clientBusiness.GetById(shipment.ReceiverId) == null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
+            await ListAllAvailabeleCouriers();
             shipment.CourierId = mishoHelper.ReadIntInput("Enter courier ID:");
+            while (clientBusiness.GetById(shipment.CourierId) == null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
+            Courier courier = await courierBusiness.GetById(shipment.CourierId);
+            courier.Available = false;
             shipment.Weight = mishoHelper.ReadDecimalInput("Enter weight:");
             shipment.Price = mishoHelper.ReadDecimalInput("Enter price:");
             shipment.Type = mishoHelper.ReadStringInput("Enter type:");
             shipment.Date = DateTime.Now.AddDays(10);
-            shipment.Status = mishoHelper.ReadStringInput("Enter status:");
-
-            await shipmentBusiness.Add(shipment);
+            shipment.Status = mishoHelper.ReadStringInput("Enter status:");  
+            int shipmentId=await shipmentBusiness.AddWithId(shipment); 
             Console.WriteLine("Shipment added successfully.");
+            Console.WriteLine("1.Without service");
+            Console.WriteLine("2.With service");
+            int input = mishoHelper.ReadIntInput("Please select an option:");
+            switch (input)
+            {
+                case 1:
+                    service_owned = false;
+                    break;
+                case 2:
+                    service_owned = true;
+                    break;
+                default:
+                    break;
+            }
+            if(service_owned)
+            {
+                int n = mishoHelper.ReadIntInput("How much services:");
+                if(n>0)
+                {
+                    await ListAllServices();
+                    for (int i = 1; i <= n; i++)
+                    {
+                        Console.WriteLine($"{i} Sevice");
+                        ShipmentService shipmentService = new ShipmentService();
+                        shipmentService.ShipmentId = shipmentId;
+                        shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter service ID:");
+                        shipmentService.Notes = mishoHelper.ReadStringInput("Enter notes:");
+                        await shipmentServiceBusiness.AddShipmentService(shipmentService);
+                        Console.WriteLine("ShipmentService added successfully.");
+                    }
+                }
+            }
+
+
         }
 
         private async Task UpdateShipment()
@@ -135,7 +209,20 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task FetchShipment()
         {
             var shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to fetch:");
-            await FetchShipmentById(shipmentId);
+            var shipment = await shipmentBusiness.GetShipmentWirhService(shipmentId);
+            if (shipment == null)
+            {
+                Console.WriteLine("Shipment not found.");
+                return;
+            }
+            Console.WriteLine(shipment);
+            foreach (var service in shipment.ShipmentServices)
+            {
+                Console.Write("Service:");
+                Console.WriteLine(service.Service);
+                Console.WriteLine("Note:");
+                Console.WriteLine(service.Notes);
+            }
         }
 
         private async Task DeleteShipment()
@@ -160,6 +247,67 @@ namespace ConsoleApp.Presentation.SubDisplays
                 return;
             }
             Console.WriteLine(shipment);
+        }
+        private async Task ListAllClients()
+        {
+            var clients = await clientBusiness.GetAll();
+            if (clients.Count == 0)
+            {
+                Console.WriteLine("No clients found.");
+                return;
+            }
+            mishoHelper.ShowHeader("All Clients");
+            foreach (var client in clients)
+            {
+                Console.WriteLine(client);
+            }
+        }
+        private async Task ListAllAvailabeleCouriers()
+        {
+            var couriers = await courierBusiness.GetAvailableCouriers();
+            if (couriers.Count == 0)
+            {
+                Console.WriteLine("No courier found.");
+                return;
+            }
+            mishoHelper.ShowHeader("All Aveilable Couriers");
+            foreach (var courier in couriers)
+            {
+                Console.WriteLine(courier);
+            }
+        }
+        private async Task ListAllServices()
+        {
+            var services = await serviceBusiness.GetAll();
+
+            if (services.Count == 0)
+            {
+                Console.WriteLine("No services found.");
+                return;
+            }
+
+            mishoHelper.ShowHeader("All Services");
+
+            foreach (var service in services)
+            {
+                Console.WriteLine(service);
+            }
+        }
+        private async Task CalculataPrice()
+        {
+            int shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to calculate:");
+            var shipment = await shipmentBusiness.GetShipmentWirhService(shipmentId);    
+            if (shipment == null)
+            {
+                Console.WriteLine("Shipment not found.");
+                return;
+            }
+            decimal sum = shipment.Price;
+            foreach(var i in shipment.ShipmentServices)
+            {
+                sum += i.Shipment.Price;
+            }
+            Console.WriteLine($"Total price{sum}");
         }
     }
 }

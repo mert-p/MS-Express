@@ -76,7 +76,6 @@ namespace ConsoleApp.Presentation.SubDisplays
             ShipmentService shipmentService = new ShipmentService();
             shipmentService.ShipmentId = mishoHelper.ReadIntInput("Enter shipment ID:");
             shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter service ID:");
-            shipmentService.ExtraPrice = mishoHelper.ReadDecimalInput("Enter extra price:");
             shipmentService.Notes = mishoHelper.ReadStringInput("Enter notes:");
 
             await shipmentServiceBusiness.AddShipmentService(shipmentService);
@@ -97,8 +96,6 @@ namespace ConsoleApp.Presentation.SubDisplays
             }
 
             await FetchShipmentServiceById(shipmentId, serviceId);
-
-            shipmentService.ExtraPrice = mishoHelper.ReadDecimalInput("Enter new extra price:");
             shipmentService.Notes = mishoHelper.ReadStringInput("Enter new notes:");
 
             await shipmentServiceBusiness.UpdateShipmentService(shipmentService);
