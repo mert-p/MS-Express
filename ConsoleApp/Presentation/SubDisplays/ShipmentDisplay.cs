@@ -9,6 +9,10 @@ namespace ConsoleApp.Presentation.SubDisplays
     internal class ShipmentDisplay
     {
         private readonly ShipmentBusiness shipmentBusiness = new ShipmentBusiness();
+        private readonly ClientBusiness clientBusiness = new ClientBusiness();
+        private readonly CourierBusiness courierBusiness= new CourierBusiness();
+        private readonly ShipmentServiceBusiness shipmentServiceBusiness = new ShipmentServiceBusiness();
+
 
         private readonly MishoHelper mishoHelper = new MishoHelper();
 
@@ -74,7 +78,8 @@ namespace ConsoleApp.Presentation.SubDisplays
         {
             bool service=false;
             mishoHelper.ShowHeader($"Creating Shipment");
-            Console.WriteLine("1");
+            Console.WriteLine("1.Without service");
+            Console.WriteLine("2.Wit service");
             int input = mishoHelper.ReadIntInput("Please select an option:");
             switch (input)
             {

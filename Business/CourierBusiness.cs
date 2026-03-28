@@ -14,31 +14,20 @@ namespace Business
         public CourierBusiness() : base() { }
 
 
-        public async Task<List<CourierViewModel>> GetAllCouriersViews()
+      
+        public async Task<List<Courier>> GetAvailableCouriers()
         {
-            var couriers = await GetAll();
-            return couriers.Select(MapToViewModel).ToList();
-        }        
-        public async Task<List<CourierViewModel>> GetAvailableCouriers()
-        {
-            var couriers = await _context.Couriers.Where(c => c.Available == true).ToListAsync();
-            return couriers.Select(MapToViewModel).ToList();
+            return await _context.Couriers.Where(c => c.Available == true).ToListAsync();
         }
-        public async Task<List<CourierViewModel>> GetCouriersByMostSalary()
+        public async Task<List<Courier>> GetCouriersByMostSalary()
         {
-            var couriers = await _context.Couriers.OrderByDescending(c=>c.Salary).ToListAsync();
-            return couriers.Select(MapToViewModel).ToList();
+            return await _context.Couriers.OrderByDescending(c=>c.Salary).ToListAsync();
         }
-        public async Task<List<CourierViewModel>> GetCouriersByLeastSalary()
+        public async Task<List<Courier>> GetCouriersByLeastSalary()
         {
-            var couriers = await _context.Couriers.OrderBy(c => c.Salary).ToListAsync();
-            return couriers.Select(MapToViewModel).ToList();
+            return await _context.Couriers.OrderBy(c => c.Salary).ToListAsync();
         }
-        public async Task<CourierViewModel> GetCourierViewById(int id)
-        {
-            var courier = await GetById(id);
-            return MapToViewModel(courier);
-        }
+
         public async Task<Courier> GetCourierByIdWithShipments(int id)
         {
             return await _context.Couriers.Include(c => c.Shipments).FirstOrDefaultAsync(c => c.Id == id);
@@ -46,18 +35,6 @@ namespace Business
         public async Task<Courier> GetCourierByIdWithShipmentsAndClients(int id)
         {
             return await _context.Couriers.Include(c => c.Shipments).ThenInclude(c=>c.ClientReceiver).Include(c => c.Shipments).ThenInclude(c => c.ClientSender).FirstOrDefaultAsync(c => c.Id == id);
-        }
-
-        private CourierViewModel MapToViewModel(Courier c)
-        {
-            return new CourierViewModel
-            {
-                Id = c.Id,
-                FullName = $"{c.FirstName} {c.LastName}",
-                Phone = c.Phone,
-                DisplaySalary = $"{c.Salary:F2}",
-                Availability = c.Available ? "Available" : "Not Available"
-            };
         }
     }
 }

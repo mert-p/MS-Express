@@ -99,7 +99,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         }
         private async Task ListAllCouriers()
         {
-            var couriers = await courierBusiness.GetAllCouriersViews();
+            var couriers = await courierBusiness.GetAll();
             if (couriers.Count == 0)
             {
                 Console.WriteLine("No courier found.");
@@ -215,7 +215,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         public async Task FetchCourierById()
         {
             int courierId = mishoHelper.ReadIntInput("Enter Courier ID:");
-            var courier = await courierBusiness.GetCourierViewById(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");
@@ -269,7 +269,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         }
         public async Task FetchCourierById(int courierId)
         {
-            var courier = await courierBusiness.GetCourierViewById(courierId);
+            var courier = await courierBusiness.GetById(courierId);
             if (courier == null)
             {
                 Console.WriteLine("Courier not found.");
