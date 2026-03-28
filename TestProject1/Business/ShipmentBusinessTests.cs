@@ -316,5 +316,29 @@ namespace TestProject1.Services
             Assert.Equal(1,result.Id);
 
         }
+        [Fact]
+
+        public async Task GetShipmentsByStatus()
+        {
+            using var ctx = TestDbContextFactory.CreateContext();
+
+            ctx.Shipments.Add(new Shipment
+            {
+                Id = 1,
+                SenderId = 1,
+                ReceiverId = 2,
+                CourierId = 1,
+                Weight = 1.2m,
+                Price = 10,
+                Type = "Light",
+                Date = DateTime.Now,
+                Status = "Pending"
+            });
+            await ctx.SaveChangesAsync();
+            var svc = CreateService(ctx);
+            var result = await svc.GetShipmentsByStatus("Pending"); 
+            Assert.NotEmpty(result);
+            Assert.All(result, s => Assert.Equal("Pending", s.Status));
+        }
     }
 }
