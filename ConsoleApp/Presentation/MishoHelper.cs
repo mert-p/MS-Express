@@ -59,6 +59,19 @@ namespace ConsoleApp.Presentation
                 return input;
             }
         }
+        public bool ReadBoolInput(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt + " (y/n):");
+                string input = Console.ReadLine()?.Trim().ToLower();
+
+                if (input == "y") return true;
+                if (input == "n") return false;
+
+                Console.Write("Invalid input! Please enter y or n:");
+            }
+        }
         public DateTime ReadDateInput(string prompt)
         {
             DateTime dateInput;

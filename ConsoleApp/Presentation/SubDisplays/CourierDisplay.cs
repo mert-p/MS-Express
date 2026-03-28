@@ -177,6 +177,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             courier.FirstName = mishoHelper.ReadStringInput("Enter first name:");
             courier.LastName = mishoHelper.ReadStringInput("Enter last name:");
             courier.Phone = mishoHelper.ReadPhoneInput("Enter phone number:");
+            courier.Available = mishoHelper.ReadBoolInput("Enter if the courier is available");
             courier.Salary = mishoHelper.ReadDecimalInput("Enter salary:");
             await courierBusiness.Update(courier);
 
