@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ExpressDbContext))]
-    [Migration("20260326231433_Initial")]
+    [Migration("20260328222045_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -161,9 +161,6 @@ namespace Data.Migrations
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("ExtraPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Notes")
                         .IsRequired()

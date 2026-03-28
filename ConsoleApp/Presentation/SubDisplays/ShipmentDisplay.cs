@@ -24,6 +24,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             Console.WriteLine("3. Update Shipment");
             Console.WriteLine("4. Fetch Shipment by ID");
             Console.WriteLine("5. Delete Shipment");
+            Console.WriteLine("5. Calculate Shipment by ID");
             Console.WriteLine("0. <-Back");
         }
         private void ListingMenu()
@@ -113,7 +114,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 {
                     Console.Write("Service:");
                     Console.WriteLine(service.Service);
-                    Console.WriteLine("Note:");
+                    Console.Write("Note:");
                     Console.WriteLine(service.Notes);
                 }
             }
@@ -371,6 +372,7 @@ namespace ConsoleApp.Presentation.SubDisplays
         }
         private async Task CalculataPrice()
         {
+            await ListAllShipments();
             int shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to calculate:");
             var shipment = await shipmentBusiness.GetShipmentWirhService(shipmentId);    
             if (shipment == null)

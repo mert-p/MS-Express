@@ -10,7 +10,6 @@ namespace ConsoleApp.Presentation
         private readonly CourierDisplay courierDisplay = new CourierDisplay();
         private readonly ClientDisplay clientDisplay =new ClientDisplay();        
         private readonly ShipmentDisplay shipmentDisplay = new ShipmentDisplay();         
-        private readonly ShipmentServiceDisplay shipmentServiceDisplay = new ShipmentServiceDisplay();
         private readonly ServiceDisplay serviceDisplay =new ServiceDisplay();
 
         private readonly MishoHelper mishoHelper = new MishoHelper();
@@ -25,8 +24,7 @@ namespace ConsoleApp.Presentation
             Console.WriteLine("1. Couriers");
             Console.WriteLine("2. Clients");
             Console.WriteLine("3. Shipments");
-            Console.WriteLine("4. ShipmentServices");
-            Console.WriteLine("5. Services");
+            Console.WriteLine("4. Services");
             Console.WriteLine("0. Exit");   
         }
         public async Task Input()
@@ -49,9 +47,6 @@ namespace ConsoleApp.Presentation
                         await shipmentDisplay.Input();
                         break;
                     case 4:
-                        await shipmentServiceDisplay.Input();
-                        break;
-                    case 5:
                         await serviceDisplay.Input();
                         break;
                     case 0:
