@@ -72,6 +72,21 @@ namespace ConsoleApp.Presentation.SubDisplays
 
         private async Task AddShipment()
         {
+            bool service=false;
+            mishoHelper.ShowHeader($"Creating Shipment");
+            Console.WriteLine("1");
+            int input = mishoHelper.ReadIntInput("Please select an option:");
+            switch (input)
+            {
+                case 1:
+                    service = false;
+                    break;
+                case 2:
+                    service = true;
+                    break;
+                default:
+                    break;
+            }
             Shipment shipment = new Shipment();
             shipment.SenderId = mishoHelper.ReadIntInput("Enter sender ID:");
             shipment.ReceiverId = mishoHelper.ReadIntInput("Enter receiver ID:");
@@ -79,7 +94,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             shipment.Weight = mishoHelper.ReadDecimalInput("Enter weight:");
             shipment.Price = mishoHelper.ReadDecimalInput("Enter price:");
             shipment.Type = mishoHelper.ReadStringInput("Enter type:");
-            shipment.Date = DateTime.Now;
+            shipment.Date = DateTime.Now.AddDays(10);
             shipment.Status = mishoHelper.ReadStringInput("Enter status:");
 
             await shipmentBusiness.Add(shipment);
