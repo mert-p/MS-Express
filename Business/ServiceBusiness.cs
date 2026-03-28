@@ -1,7 +1,6 @@
 ﻿using Data;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;

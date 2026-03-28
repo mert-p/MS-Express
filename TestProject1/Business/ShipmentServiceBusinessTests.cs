@@ -95,19 +95,16 @@ namespace TestProject1.Services
 
             var svc = CreateService(ctx);
 
-            ctx.ShipmentServices.Add(new ShipmentService
+            await svc.AddShipmentService(new ShipmentService
             {
                 ShipmentId = 1,
                 ServiceId = 1,
                 ExtraPrice = 5,
-                 Notes = "fasa"
+                Notes = "fasa"
             });
 
-            await ctx.SaveChangesAsync();
-
-            var result = await svc.GetAllShipmentServices();
-
-            Assert.Single(result);
+                 await ctx.SaveChangesAsync();
+            Assert.Single(ctx.ShipmentServices);
         }
 
         [Fact]

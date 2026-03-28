@@ -384,5 +384,20 @@ namespace TestProject1.Services
 
             Assert.Empty(ctx.Clients);
         }
+
+        [Fact]
+
+        public async Task GetClientByIDWithShipmentTest()
+        {
+            using var ctx = TestDbContextFactory.CreateContext();
+            ctx.Clients.Add(new Client { Id = 1, FirstName = "Client1", LastName = "1", Email = "abcdefg@gmai.com", Address = "Bolqrovo", Phone = "0802814129" });
+            await ctx.SaveChangesAsync();
+            var svc = CreateService(ctx);
+            ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 1, CourierId = 1, Status = "In Transit", Weight = 1.30m, Price = 10.50m, Type = "Light" });
+
+            await svc.GetClientByIdWithShipment(1);
+
+            Assert.NotNull(ctx.Clients.First().SentShipments);
+        }
     }
 }
