@@ -115,6 +115,8 @@ namespace WebApp.Controllers
             }
             return View(client);
         }
+          
+
 
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -130,7 +132,6 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
             return View(client);
         }
 

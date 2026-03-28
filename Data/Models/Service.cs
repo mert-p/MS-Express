@@ -9,7 +9,7 @@ namespace Data.Models
         public int Id { get; set; } 
         public string Name { get; set; }    
         public decimal Price { get; set; }    
-        public List<ShipmentService> ShipmentServices { get; set; }
+        public List<ShipmentService>? ShipmentServices { get; set; }
         public override string ToString()
         {
             return $"ID:{Id} Name:{Name} Price:{Price:F2}";

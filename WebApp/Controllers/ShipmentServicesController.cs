@@ -22,14 +22,16 @@ namespace WebApp.Controllers
         // GET: ShipmentServices
         public async Task<IActionResult> Index()
         {
-            var expressDbContext = _context.ShipmentServices.Include(s => s.Service).Include(s => s.Shipment);
+            var expressDbContext = _context.ShipmentServices
+                .Include(s => s.Service)
+                .Include(s => s.Shipment);
             return View(await expressDbContext.ToListAsync());
         }
 
         // GET: ShipmentServices/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? shipmentId, int? serviceId)
         {
-            if (id == null)
+            if (shipmentId == null || serviceId == null)
             {
                 return NotFound();
             }
@@ -37,7 +39,8 @@ namespace WebApp.Controllers
             var shipmentService = await _context.ShipmentServices
                 .Include(s => s.Service)
                 .Include(s => s.Shipment)
-                .FirstOrDefaultAsync(m => m.ShipmentId == id);
+                .FirstOrDefaultAsync(m => m.ShipmentId == shipmentId && m.ServiceId == serviceId);
+
             if (shipmentService == null)
             {
                 return NotFound();
@@ -55,8 +58,6 @@ namespace WebApp.Controllers
         }
 
         // POST: ShipmentServices/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShipmentId,ServiceId,ExtraPrice,Notes")] ShipmentService shipmentService)
@@ -72,32 +73,33 @@ namespace WebApp.Controllers
             return View(shipmentService);
         }
 
-        // GET: ShipmentServices/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: ShipmentServices/Edit
+        public async Task<IActionResult> Edit(int? shipmentId, int? serviceId)
         {
-            if (id == null)
+            if (shipmentId == null || serviceId == null)
             {
                 return NotFound();
             }
 
-            var shipmentService = await _context.ShipmentServices.FindAsync(id);
+            var shipmentService = await _context.ShipmentServices
+                .FindAsync(shipmentId, serviceId);
+
             if (shipmentService == null)
             {
                 return NotFound();
             }
+
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Name", shipmentService.ServiceId);
             ViewData["ShipmentId"] = new SelectList(_context.Shipments, "Id", "Status", shipmentService.ShipmentId);
             return View(shipmentService);
         }
 
-        // POST: ShipmentServices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ShipmentServices/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShipmentId,ServiceId,ExtraPrice,Notes")] ShipmentService shipmentService)
+        public async Task<IActionResult> Edit(int shipmentId, int serviceId, [Bind("ShipmentId,ServiceId,ExtraPrice,Notes")] ShipmentService shipmentService)
         {
-            if (id != shipmentService.ShipmentId)
+            if (shipmentId != shipmentService.ShipmentId || serviceId != shipmentService.ServiceId)
             {
                 return NotFound();
             }
@@ -111,7 +113,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShipmentServiceExists(shipmentService.ShipmentId))
+                    if (!ShipmentServiceExists(shipmentId, serviceId))
                     {
                         return NotFound();
                     }
@@ -122,15 +124,16 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Name", shipmentService.ServiceId);
             ViewData["ShipmentId"] = new SelectList(_context.Shipments, "Id", "Status", shipmentService.ShipmentId);
             return View(shipmentService);
         }
 
-        // GET: ShipmentServices/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: ShipmentServices/Delete
+        public async Task<IActionResult> Delete(int? shipmentId, int? serviceId)
         {
-            if (id == null)
+            if (shipmentId == null || serviceId == null)
             {
                 return NotFound();
             }
@@ -138,7 +141,8 @@ namespace WebApp.Controllers
             var shipmentService = await _context.ShipmentServices
                 .Include(s => s.Service)
                 .Include(s => s.Shipment)
-                .FirstOrDefaultAsync(m => m.ShipmentId == id);
+                .FirstOrDefaultAsync(m => m.ShipmentId == shipmentId && m.ServiceId == serviceId);
+
             if (shipmentService == null)
             {
                 return NotFound();
@@ -147,12 +151,14 @@ namespace WebApp.Controllers
             return View(shipmentService);
         }
 
-        // POST: ShipmentServices/Delete/5
+        // POST: ShipmentServices/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int shipmentId, int serviceId)
         {
-            var shipmentService = await _context.ShipmentServices.FindAsync(id);
+            var shipmentService = await _context.ShipmentServices
+                .FindAsync(shipmentId, serviceId);
+
             if (shipmentService != null)
             {
                 _context.ShipmentServices.Remove(shipmentService);
@@ -162,9 +168,10 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ShipmentServiceExists(int id)
+        private bool ShipmentServiceExists(int shipmentId, int serviceId)
         {
-            return _context.ShipmentServices.Any(e => e.ShipmentId == id);
+            return _context.ShipmentServices
+                .Any(e => e.ShipmentId == shipmentId && e.ServiceId == serviceId);
         }
     }
 }
