@@ -137,6 +137,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             Courier courier = await courierBusiness.GetById(shipment.CourierId);
             courier.Available = false;
+            await courierBusiness.Update(courier);
             shipment.Weight = mishoHelper.ReadDecimalInput("Enter weight:");
             shipment.Price = mishoHelper.ReadDecimalInput("Enter price:");
             shipment.Type = mishoHelper.ReadStringInput("Enter type:");
@@ -164,6 +165,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 if(n>0)
                 {
                     await ListAllServices();
+                    mishoHelper.ShowHeader("Adding Services");
                     for (int i = 1; i <= n; i++)
                     {
                         Console.WriteLine($"{i} Sevice");
