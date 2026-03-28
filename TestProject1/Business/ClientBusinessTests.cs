@@ -210,7 +210,7 @@ namespace TestProject1.Services
             using var ctx = TestDbContextFactory.CreateContext();
             ctx.Clients.Add(new Client { Id = 1, FirstName = "Client1", LastName = "1", Email = "abcdefg@gmai.com", Address = "Bolqrovo", Phone = "0802814129" });
             ctx.Clients.Add(new Client { Id = 2, FirstName = "Client2", LastName = "2", Email = "gfedcba@gmail.com", Address = "Hiroshima", Phone = "0841941921" });
-            ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 2, CourierId = 1, Status = "In Transit", Weight = 1.30m, Price = 10.50m, Type = "Light" });
+            ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 2, CourierId = 1, Status = "New", Weight = 1.30m, Price = 10.50m, Type = "Light" });
             await ctx.SaveChangesAsync();
             var svc = CreateService(ctx);
      
