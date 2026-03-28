@@ -15,10 +15,14 @@ namespace Business
             return MapToViewModel(client);
         }
 
-        public async Task<List<ClientViewModel>> GetAllShipmentViews()
+        public async Task<List<ClientViewModel>> GetAllClientsViews()
         {
             var clients = await GetAll();
             return clients.Select(MapToViewModel).ToList();
+        }
+        public async Task<Client> GetClientByIdWithShipment(int id)
+        {
+            return await _context.Clients.Include(s => s.SentShipments).ThenInclude(s => s.Courier).Include(s => s.ReceivedShipments).ThenInclude(s => s.Courier).FirstOrDefaultAsync(c => c.Id == id);
         }
         private ClientViewModel MapToViewModel(Client s)
         {

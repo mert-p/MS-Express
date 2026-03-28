@@ -44,9 +44,8 @@ namespace Business
 
         public async Task Update(T entity)
         {
-            var existing = await _dbSet.FindAsync(
-                _context.Entry(entity).Property("Id").CurrentValue
-            );
+            var entityid = _context.Entry(entity).Property("Id").CurrentValue;
+            var existing = await _dbSet.FindAsync(entityid);    
 
             if (existing == null)
             { return; }

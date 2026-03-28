@@ -1,3 +1,5 @@
+using Data;
+
 namespace WebApp
 {
     public class Program
@@ -8,6 +10,7 @@ namespace WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<ExpressDbContext>();
 
             var app = builder.Build();
 
