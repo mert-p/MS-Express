@@ -194,7 +194,7 @@ namespace TestProject1.Services
             ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 2, CourierId = 1, Status = "In Transit", Weight = 1.30m, Price = 10.50m, Type = "Light" });
             await ctx.SaveChangesAsync();
             var svc = CreateService(ctx);
-            //Mert bashe tuk
+
             var result = await svc.GetById(2);
 
             Assert.Equal(2, result.Id);
@@ -213,7 +213,7 @@ namespace TestProject1.Services
             ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 2, CourierId = 1, Status = "In Transit", Weight = 1.30m, Price = 10.50m, Type = "Light" });
             await ctx.SaveChangesAsync();
             var svc = CreateService(ctx);
-            //Mert bashe tuk
+     
             var result = await svc.GetById(2);
 
             Assert.Equal("Client2", result.FirstName);
@@ -232,7 +232,7 @@ namespace TestProject1.Services
             ctx.Shipments.Add(new Shipment { Id = 1, SenderId = 1, ReceiverId = 2, CourierId = 1, Status = "In Transit", Weight = 1.30m, Price = 10.50m, Type = "Light" });
             await ctx.SaveChangesAsync();
             var svc = CreateService(ctx);
-            //Mert bashe tuk
+      
             var result = await svc.GetById(2);
 
             

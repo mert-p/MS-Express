@@ -21,7 +21,7 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
+          
                 Notes="fasa"
             });
 
@@ -29,7 +29,7 @@ namespace TestProject1.Services
             {
                 ShipmentId = 2,
                 ServiceId = 2,
-                ExtraPrice = 10,
+              
                  Notes = "tqqtqt"
             });
 
@@ -51,7 +51,6 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
                  Notes = "fasa"
             });
 
@@ -73,7 +72,6 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
                  Notes = "fasa"
             });
 
@@ -83,7 +81,7 @@ namespace TestProject1.Services
             var result = await svc.GetShipmentServiceByIds(1, 1);
 
            
-            Assert.Equal(5, result.ExtraPrice);
+            Assert.Equal("fasa", result.Notes);
         }
 
 
@@ -99,7 +97,6 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
                 Notes = "fasa"
             });
 
@@ -116,7 +113,7 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
+                
                 Notes = "fasa"
             });
 
@@ -128,11 +125,11 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 15,
-                Notes = "fasa"
+               
+                Notes = "gaga"
             });
 
-            Assert.Equal(15, ctx.ShipmentServices.First().ExtraPrice);
+            Assert.Equal("gaga", ctx.ShipmentServices.First().Notes);
         }
 
         [Fact]
@@ -144,7 +141,7 @@ namespace TestProject1.Services
             {
                 ShipmentId = 1,
                 ServiceId = 1,
-                ExtraPrice = 5,
+             
                 Notes = "fasa"
             });
 
