@@ -194,35 +194,102 @@ namespace ConsoleApp.Presentation.SubDisplays
             await FetchShipmentById(shipmentId);
 
             shipment.SenderId = mishoHelper.ReadIntInput("Enter new sender ID:");
+            while (clientBusiness.GetById(shipment.SenderId) == null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             shipment.ReceiverId = mishoHelper.ReadIntInput("Enter new receiver ID:");
+            while (clientBusiness.GetById(shipment.ReceiverId) == null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
+            await ListAllAvailabeleCouriers();
             shipment.CourierId = mishoHelper.ReadIntInput("Enter new courier ID:");
+            while (clientBusiness.GetById(shipment.CourierId) == null)
+            { shipment.SenderId = mishoHelper.ReadIntInput("Wrong! Plese new ID:"); }
             shipment.Weight = mishoHelper.ReadDecimalInput("Enter new weight:");
             shipment.Price = mishoHelper.ReadDecimalInput("Enter new price:");
             shipment.Type = mishoHelper.ReadStringInput("Enter new type:");
             shipment.Status = mishoHelper.ReadStringInput("Enter new status:");
-
             await shipmentBusiness.Update(shipment);
-
             Console.WriteLine("Shipment updated successfully.");
+            Console.WriteLine("Wanna change the servise in the shipment?"); 
+            Console.WriteLine("1.Add service by ID");
+            Console.WriteLine("2.Update service by ID");
+            Console.WriteLine("3.Delete service by ID");
+            Console.WriteLine("0.NO!!!");
+            int input = mishoHelper.ReadIntInput("Please select an option:");
+            switch(input)
+            {
+                case 1:
+                    await UpdateShipmentService(shipmentId);
+                    break;
+                case 2:
+                    await DeleteShipmentService(shipmentId);
+                    break;
+                case 3:
+                    await AddShipmentService(shipmentId);
+                    break;
+                default:
+                    break;
+            }
+        }
+        private async Task DeleteShipmentService(int shipmentId)
+        {
+            Console.WriteLine("Deleting until you press 0!");
+            int serviceId;
+            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:"))!=0)
+            {
+            var shipmentService = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentId, serviceId);
+
+            if (shipmentService == null)
+            {
+                Console.WriteLine("Service not found.");
+                return;
+            }
+
+            await shipmentServiceBusiness.DeleteShipmentService(shipmentId, serviceId);
+            Console.WriteLine("Service deleted successfully.");
+            }
+
+
+        }
+        private async Task UpdateShipmentService(int shipmentId)
+        {
+            Console.WriteLine("Updating until you press 0!");
+            int serviceId;
+            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:")) != 0)
+            {
+
+                var shipmentService = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentId, serviceId);
+
+                if (shipmentService == null)
+                {
+                    Console.WriteLine("ShipmentService not found.");
+                    return;
+                }
+                shipmentService.Notes = mishoHelper.ReadStringInput("Enter new notes:");
+
+                await shipmentServiceBusiness.UpdateShipmentService(shipmentService);
+
+                Console.WriteLine("Service updated successfully.");
+            }
+        }
+        private async Task AddShipmentService(int shipmentId)
+        {
+            Console.WriteLine("Adding until you press 0!");
+            int serviceId;
+            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:")) != 0)
+            {
+                ShipmentService shipmentService = new ShipmentService();
+                shipmentService.ShipmentId = shipmentId;
+                shipmentService.ServiceId = serviceId;
+                shipmentService.Notes = mishoHelper.ReadStringInput("Enter notes:");
+                await shipmentServiceBusiness.AddShipmentService(shipmentService);
+                Console.WriteLine("Service added successfully.");
+            }
         }
 
         private async Task FetchShipment()
         {
             var shipmentId = mishoHelper.ReadIntInput("Enter Shipment ID to fetch:");
-            var shipment = await shipmentBusiness.GetShipmentWirhService(shipmentId);
-            if (shipment == null)
-            {
-                Console.WriteLine("Shipment not found.");
-                return;
-            }
-            Console.WriteLine(shipment);
-            foreach (var service in shipment.ShipmentServices)
-            {
-                Console.Write("Service:");
-                Console.WriteLine(service.Service);
-                Console.WriteLine("Note:");
-                Console.WriteLine(service.Notes);
-            }
+            await FetchShipmentById(shipmentId);
         }
 
         private async Task DeleteShipment()
@@ -240,13 +307,20 @@ namespace ConsoleApp.Presentation.SubDisplays
 
         public async Task FetchShipmentById(int shipmentId)
         {
-            var shipment = await shipmentBusiness.GetById(shipmentId);
+            var shipment = await shipmentBusiness.GetShipmentWirhService(shipmentId);
             if (shipment == null)
             {
                 Console.WriteLine("Shipment not found.");
                 return;
             }
             Console.WriteLine(shipment);
+            foreach (var service in shipment.ShipmentServices)
+            {
+                Console.Write("Service:");
+                Console.WriteLine(service.Service);
+                Console.WriteLine("Note:");
+                Console.WriteLine(service.Notes);
+            }
         }
         private async Task ListAllClients()
         {
@@ -270,7 +344,7 @@ namespace ConsoleApp.Presentation.SubDisplays
                 Console.WriteLine("No courier found.");
                 return;
             }
-            mishoHelper.ShowHeader("All Aveilable Couriers");
+            mishoHelper.ShowHeader("All Available Couriers");
             foreach (var courier in couriers)
             {
                 Console.WriteLine(courier);
