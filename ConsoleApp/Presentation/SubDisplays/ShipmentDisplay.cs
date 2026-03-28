@@ -172,7 +172,7 @@ namespace ConsoleApp.Presentation.SubDisplays
             }
             if(service_owned)
             {
-                int n = mishoHelper.ReadIntInput("How much services:");
+                int n = mishoHelper.ReadIntInput("How many services:");
                 if(n>0)
                 {
                     await ListAllServices();
@@ -184,6 +184,12 @@ namespace ConsoleApp.Presentation.SubDisplays
                         shipmentService.ShipmentId = shipmentId;
                         shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter service ID:");
                         shipmentService.Notes = mishoHelper.ReadStringInput("Enter notes:");
+                        var existing = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentService.ShipmentId, shipmentService.ServiceId);
+                        if (existing != null)
+                        {
+                            Console.WriteLine("This service is already added to this shipment!");
+                            continue; 
+                        }
                         await shipmentServiceBusiness.AddShipmentService(shipmentService);
                         Console.WriteLine("ShipmentService added successfully.");
                     }
@@ -271,16 +277,16 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task UpdateShipmentService(int shipmentId)
         {
             Console.WriteLine("Updating until you press 0!");
-            int serviceId;
-            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:")) != 0)
+            ShipmentService shipmentService= new ShipmentService();
+            shipmentService.ShipmentId = shipmentId;
+            while ((shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter Service ID to update:")) != 0)
             {
 
-                var shipmentService = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentId, serviceId);
-
-                if (shipmentService == null)
+                var existing = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentService.ShipmentId, shipmentService.ServiceId);
+                if (existing != null)
                 {
-                    Console.WriteLine("ShipmentService not found.");
-                    return;
+                    Console.WriteLine("This service is already added to this shipment!");
+                    continue;
                 }
                 shipmentService.Notes = mishoHelper.ReadStringInput("Enter new notes:");
 
@@ -293,11 +299,17 @@ namespace ConsoleApp.Presentation.SubDisplays
         {
             Console.WriteLine("Adding until you press 0!");
             int serviceId;
-            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID to delete:")) != 0)
+            while ((serviceId = mishoHelper.ReadIntInput("Enter Service ID:")) != 0)
             {
                 ShipmentService shipmentService = new ShipmentService();
                 shipmentService.ShipmentId = shipmentId;
                 shipmentService.ServiceId = serviceId;
+                var existing = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentService.ShipmentId, shipmentService.ServiceId);
+                if (existing != null)
+                {
+                    Console.WriteLine("This service is already added to this shipment!");
+                    continue;
+                }
                 shipmentService.Notes = mishoHelper.ReadStringInput("Enter notes:");
                 await shipmentServiceBusiness.AddShipmentService(shipmentService);
                 Console.WriteLine("Service added successfully.");
