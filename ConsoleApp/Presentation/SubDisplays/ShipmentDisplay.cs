@@ -277,21 +277,20 @@ namespace ConsoleApp.Presentation.SubDisplays
         private async Task UpdateShipmentService(int shipmentId)
         {
             Console.WriteLine("Updating until you press 0!");
-            ShipmentService shipmentService= new ShipmentService();
+            ShipmentService shipmentService = new ShipmentService();
             shipmentService.ShipmentId = shipmentId;
-            while ((shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter Service ID to update:")) != 0)
-            {
 
+            while ((shipmentService.ServiceId = mishoHelper.ReadIntInput("Enter Service ID to update (0 to stop):")) != 0)
+            {
                 var existing = await shipmentServiceBusiness.GetShipmentServiceByIds(shipmentService.ShipmentId, shipmentService.ServiceId);
-                if (existing != null)
+
+                if (existing == null)
                 {
-                    Console.WriteLine("This service is already added to this shipment!");
+                    Console.WriteLine("This service is not added to this shipment!");
                     continue;
                 }
-                shipmentService.Notes = mishoHelper.ReadStringInput("Enter new notes:");
-
-                await shipmentServiceBusiness.UpdateShipmentService(shipmentService);
-
+                existing.Notes = mishoHelper.ReadStringInput("Enter new notes:");
+                await shipmentServiceBusiness.UpdateShipmentService(existing);
                 Console.WriteLine("Service updated successfully.");
             }
         }
